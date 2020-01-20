@@ -1,0 +1,35 @@
+/**
+ * Auto Complete CSS
+ */
+
+ .input.autocomplete {
+    width: 300px;
+    margin-left: 200px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    display: block;
+    height: 215px;
+    overflow: auto;
+    background: #fff;
+    width: 300px;
+    left: 200px;
+    text-align: left;
+    padding-left: 0px;
+    border: 1px solid #ccc;
+    &.closed {
+        display: none;
+    }
+    /*
+    transform-origin: top left;
+    transform: translate3d(-8px, 0, 0);
+    */
+    li {
+        padding:10px;
+        border-bottom: 1px solid #ccc;
+        &:hover {
+            background: #ccc;
+        }
+    }
+}
