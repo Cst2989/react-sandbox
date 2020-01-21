@@ -1,13 +1,20 @@
+@import url(//db.onlinewebfonts.com/c/4a0c1d6164df2c0aa88da1437cd38ef1?family=Copyright+Klim+Type+Foundry);
+@font-face {font-family: "Copyright Klim Type Foundry"; src: url("//db.onlinewebfonts.com/t/4a0c1d6164df2c0aa88da1437cd38ef1.eot"); src: url("//db.onlinewebfonts.com/t/4a0c1d6164df2c0aa88da1437cd38ef1.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/4a0c1d6164df2c0aa88da1437cd38ef1.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/4a0c1d6164df2c0aa88da1437cd38ef1.woff") format("woff"), url("//db.onlinewebfonts.com/t/4a0c1d6164df2c0aa88da1437cd38ef1.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/4a0c1d6164df2c0aa88da1437cd38ef1.svg#Copyright Klim Type Foundry") format("svg"); }
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  background-color: rgb(255,255,255);
+  color: rgb(41,67,75);
+  font-family: "Copyright Klim Type Foundry";
+  font-size: 16px;
+  height: 100%;
+  position: relative;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+*, *::after, *::before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
