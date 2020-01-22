@@ -48,7 +48,7 @@
         top: 42px;
     }
     .autocomplete__results {
-        display: block;
+        display: block; // to-do switch to none when dev is finished.
         position: relative;
         margin-top: 20px;
         width: 100%;
@@ -68,6 +68,10 @@
             list-style: none;
             display: flex;
             &:hover {
+                cursor: pointer;
+                background: darken($color: #fff, $amount: 10%)
+            }
+            &.autocomplete__results-item--active {
                 cursor: pointer;
                 background: darken($color: #fff, $amount: 10%)
             }
