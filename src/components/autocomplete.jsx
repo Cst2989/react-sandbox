@@ -1,19 +1,52 @@
 import React, { Fragment, useState } from 'react';
 import './autocomplete.scss';
 
-const Autocomplete = (props) => {
-    const [inputText, setInputText] = useState('');
-    const [results, setResults] = useState([]);
-    const [active, setActive] = useState(false);
-    
-    
+const Label = (props) => {
+    return (
+        <label className="autocomplete__label">{props.label}</label>
+    )
+}
+const Avatar = props => {
+    return (
+        <span className="autocomplete__results-item__avatar">
+            { props.avatar ? <img alt={props.firstName} src={props.avatar.url} /> : props.initials }
+        </span>
+    )
+}
+const ItemInfo = props => {
+    return (
+        <span className="autocomplete__results-item__info">
+            <span className="autocomplete__results-item__info-name">{props.name}</span>
+            <span className="autocomplete__results-item__info-email">{props.email}</span>
+        </span>
+    )
+}
+const Dropdown = (props) => {
     const selectItem = (item) => {
-        
+        console.log(item) 
     }
     return (
         <Fragment>
+            <ul className="autocomplete__results">
+                {props.data && props.data.map((item, i) => (
+                    <li key={i} className="autocomplete__results-item" onClick={() => selectItem(item)}>
+                        <Avatar avatar={item.avatar} initials={item.initials}  /> 
+                        <ItemInfo name={item.name} email={item.email} />
+                    </li>
+                ))}
+            </ul>
+        </Fragment>
+    )
+}
+
+const Autocomplete = (props) => {
+    const [inputText, setInputText] = useState('');
+    const [active, setActive] = useState(false);
+    
+    return (
+        <Fragment>
             <div className={'autocomplete ' + ( active ? 'autocomplete--active' : 'autocomplete--inactive') }>
-                <label className="autocomplete__label">{props.label}</label>
+                <Label label={props.label} />
                 <input 
                     type="text"  
                     className="autocomplete__input" 
@@ -24,21 +57,9 @@ const Autocomplete = (props) => {
                     placeholder={props.placeholder}
                 />
                 <div className="autocomplete__caret"></div>
-                <ul className="autocomplete__results">
-                    {props.data && props.data.map((item, i) => (
-                        <li key={i} className="autocomplete__results__item" onClick={() => selectItem(item)}>
-                            {item.attributes.name}
-                        </li>
-                    ))}
-                </ul>
+                <Dropdown data={props.data} />
             </div>
-            <ul className={'dropdown-menu ' + ( results.length > 0 ? 'open' : 'closed') }>
-                {results.map((item, i) => (
-                    <li key={i} className="item" onClick={() => selectItem(item)}>
-                        {item.name}
-                    </li>
-                ))}
-            </ul>
+            
         </Fragment>
     )
 }
