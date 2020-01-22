@@ -9,7 +9,7 @@
 .App .App-body {
   background-color: #f8f7f5;
   position: relative;
-  min-height: calc(120vh - 78px);
+  min-height: calc(80vh - 78px);
 }
 .container {
     margin-right: auto;
@@ -86,7 +86,7 @@ col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col
     -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.05);
     box-shadow: 0 0 10px 0 rgba(0,0,0,.05);
     border-radius: 2px;
-    height: 600px;
+    height: 500px;
     width: 490px;
     z-index: 2;
     position: relative;
