@@ -7,11 +7,11 @@
     margin-bottom: 1rem;
     margin-top: 1rem;
     position: relative;
-    .autocomplete__label {
+    .autocompleteLabel {
         display: inline-block;
         margin-bottom: .5rem;
     }
-    .autocomplete__input {
+    .autocompleteInput {
         display: block;
         width: 100%;
         height: calc(1.5em + .75rem + 2px);
@@ -36,7 +36,7 @@
         }
     }
 
-    .autocomplete__caret {
+    .autocompleteCaret {
         width: 0; 
         height: 0; 
         border-left: 8px solid transparent;
@@ -47,8 +47,8 @@
         right: 13px;
         top: 42px;
     }
-    .autocomplete__results {
-        display: block; // to-do switch to none when dev is finished.
+    .autocompleteResults {
+        display: block; 
         position: relative;
         margin-top: 20px;
         width: 100%;
@@ -62,7 +62,7 @@
         transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out, max-height .3s ease-in-out;
         overflow: scroll;
         padding-left: 0px;
-        .autocomplete__results-item {
+        .autocompleteResultsItem {
             width: 100%;
             padding: 20px;
             border-bottom: 1px solid #ced4da;
@@ -72,14 +72,14 @@
                 cursor: pointer;
                 background: darken($color: #fff, $amount: 10%)
             }
-            &.autocomplete__results-item--active {
+            &.autocompleteResultsItemActive {
                 cursor: pointer;
                 background: darken($color: #fff, $amount: 10%)
             }
             &:last-child {
                 border-bottom: none;
             }
-            .autocomplete__results-item__avatar {
+            .autocompleteResultsItemAvatar {
                 background: #3bc486;
                 color: #fff;
                 padding: 10px;
@@ -89,20 +89,20 @@
                 min-width: 50px;
                 font-weight: bold;
             }
-            .autocomplete__results-item__info {
+            .autocompleteResultsItemInfo {
                 display: flex;
                 flex-direction: column;
-                .autocomplete__results-item__info-email {
+                .autocompleteResultsItemInfoEmail {
                     opacity: 0.3
                 }
-                .autocomplete__results-item__info-name {
+                .autocompleteResultsItemInfoName {
                     font-size: 18px;
                 }
             }
         }
     }
-    &.autocomplete--active {
-        .autocomplete__caret {
+    &.autocompleteActive {
+        .autocompleteCaret {
             width: 0; 
             height: 0; 
             border-left: 8px solid transparent;
@@ -111,7 +111,7 @@
             border-top: none;
             top: 42px;
         }
-        .autocomplete__results { 
+        .autocompleteResults { 
             display: block;
             max-height: 160px;
             border: 1px solid #ced4da;

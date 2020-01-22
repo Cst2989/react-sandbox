@@ -1,23 +1,23 @@
 import React, { Fragment, useState, useEffect, useRef } from 'react';
-import './autocomplete.scss';
+import * as styles from './autocomplete.module.scss';
 
 const Label = (props) => {
     return (
-        <label className="autocomplete__label">{props.label}</label>
+        <label className={`${styles.autocompleteLabel}`}>{props.label}</label>
     )
 }
 const Avatar = props => {
     return (
-        <span className="autocomplete__results-item__avatar">
+        <span className={`${styles.autocompleteResultsItemAvatar}`}>
             { props.avatar ? <img alt={props.firstName} src={props.avatar.url} /> : props.initials }
         </span>
     )
 }
 const ItemInfo = props => {
     return (
-        <span className="autocomplete__results-item__info">
-            <span className="autocomplete__results-item__info-name">{props.name}</span>
-            <span className="autocomplete__results-item__info-email">{props.email}</span>
+        <span className={`${styles.autocompleteResultsItemInfo}`}>
+            <span className={`${styles.autocompleteResultsItemInfoName}`}>{props.name}</span>
+            <span className={`${styles.autocompleteResultsItemInfoEmail}`}>{props.email}</span>
         </span>
     )
 }
@@ -26,7 +26,6 @@ const Dropdown = (props) => {
     
     const selectItem = (item, i ) => {
         props.emit(item.name)
-        console.log(refs);
     }
     useEffect(() => {
         if (props.active > 2) {
@@ -37,9 +36,9 @@ const Dropdown = (props) => {
     }, [props.active]);
     return (
         <Fragment>
-            <ul className="autocomplete__results">
+            <ul className={`${styles.autocompleteResults}`}>
                 {props.data && props.data.map((item, i) => (
-                    <li key={i + 1} ref={refs.current[i]} className={'autocomplete__results-item ' + (props.active === i + 1 ? 'autocomplete__results-item--active' : '' )} onClick={() => selectItem(item, i)}>
+                    <li key={i + 1} ref={refs.current[i]} className={`${styles.autocompleteResultsItem} ` + (props.active === i + 1 ? `${styles.autocompleteResultsItemActive}` : '' )} onClick={() => selectItem(item, i)}>
                         <Avatar avatar={item.avatar} initials={item.initials}  /> 
                         <ItemInfo name={item.name} email={item.email} />
                     </li>
@@ -90,11 +89,11 @@ const Autocomplete = (props) => {
 
     return (
         <Fragment>
-            <div className={'autocomplete ' + ( active ? 'autocomplete--active' : 'autocomplete--inactive') }>
+            <div className={`${styles.autocomplete} ` + ( active ? `${styles.autocompleteActive}` : '') }>
                 <Label label={props.label} />
                 <input 
                     type="text"  
-                    className="autocomplete__input" 
+                    className={`${styles.autocompleteInput}`}
                     value={inputText}  
                     onChange={(event) => filterData(event.target.value)}
                     onKeyDown={handleKeyDown}
@@ -102,7 +101,7 @@ const Autocomplete = (props) => {
                     onBlur={() => setActive(false)} 
                     placeholder={props.placeholder}
                 />
-                <div className="autocomplete__caret"></div>
+                <div className={`${styles.autocompleteCaret}`}></div>
                 {filteredData.length > 0 && 
                 <Dropdown active={activeItem} data={filteredData} emit={setInputText} />
                 }
