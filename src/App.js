@@ -17,7 +17,7 @@ function App() {
                 <h1 className="heading-1"> The Leading Candidates Search Component</h1>
                 <p className="heading-3 home__intro l-margin-top-30"> Dan gathers the challange data, analyses it, and provides the solution, plus he hopes you appreciate his sense of humour.</p>
                 <div className="l-margin-top-30"> 
-                  <img src="/profile.png" alt="me!"/>
+                  <img src="/profile_img2.png" alt="me!"/>
                 </div>
               </div>
             </div>
