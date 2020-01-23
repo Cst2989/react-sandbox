@@ -42,12 +42,7 @@ export const Dropdown = React.memo(
             <li
               key={i + 1}
               ref={refs.current[i]}
-              className={
-                `${styles.autocompleteResultsItem} ` +
-                (active === i + 1
-                  ? `${styles.autocompleteResultsItemActive}`
-                  : "")
-              }
+              className={ `${styles.autocompleteResultsItem} ` + (active === i + 1 ? `${styles.autocompleteResultsItemActive}`: "")}
               onClick={() => emit(item.name)}
             >
               <Avatar avatar={item.avatar} initials={item.initials} />
