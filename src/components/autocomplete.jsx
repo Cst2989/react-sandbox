@@ -93,6 +93,8 @@ const Autocomplete = ({data = [], label='Default Label', placeholder='Default Pl
                 <Label label={label} />
                 <input 
                     type="text"  
+                    data-active={active}
+                    data-active-item = {activeItem}
                     className={`${styles.autocompleteInput}`}
                     value={inputText}  
                     onChange={(event) => filterData(event.target.value)}

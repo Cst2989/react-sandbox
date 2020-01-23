@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Autocomplete /> with no props should match the snapshot 1`] = `"<div class=\\"undefined \\"><label class=\\"undefined\\">Default Label</label><input type=\\"text\\" data-active=\\"false\\" data-active-item=\\"0\\" class=\\"undefined\\" value=\\"\\" placeholder=\\"Default Placeholder\\"/><div class=\\"undefined\\"></div></div>"`;
