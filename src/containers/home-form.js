@@ -37,7 +37,7 @@ const HomeForm = () => {
         <strong>Try it out</strong>
       </h3>
       <Autocomplete
-        label="Managers"
+        label="Manager"
         data={data}
         placeholder="Search for Managers..."
       />

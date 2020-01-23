@@ -1,9 +1,11 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
 import Autocomplete from "./Autocomplete";
+import { Dropdown } from "./Autocomplete";
 import { create, act } from "react-test-renderer";
 
 window.HTMLElement.prototype.scrollIntoView = function() {}; // so refs work
+window.HTMLElement.prototype.blur = function() {}; // so refs work
 const MockedData = [
   {
     name: "Dan Neciu",
@@ -56,7 +58,7 @@ describe("<Autocomplete /> with no props", () => {
       placeholder: "Default Placeholder",
       type: "text",
       "data-active": false,
-      "data-active-item": 0,
+      "data-active-item": 1,
       value: "",
       className: "undefined"
     });
@@ -78,11 +80,20 @@ describe("<Autocomplete /> with mocked data", () => {
         scrollIntoView: function() {}
       };
     }
+    if (element.type === "input") {
+      // This is your fake DOM node for <p>.
+      // Feel free to add any stub methods, e.g. focus() or any
+      // other methods necessary to prevent crashes in your components.
+      return {
+        blur: function() {}
+      };
+    }
     // You can return any object from this method for any type of DOM component.
     // React will use it as a ref instead of a DOM node when snapshot testing.
     return null;
   };
   const container = shallow(<Autocomplete {...initialProps} />);
+
   it("should set the input value on change event", () => {
     container.find('input[type="text"]').simulate("change", {
       target: {
@@ -124,33 +135,52 @@ describe("<Autocomplete /> with mocked data", () => {
       .simulate("keydown", { key: "ArrowUp" });
     expect(
       container.find('input[type="text"]').prop("data-active-item")
-    ).toEqual(0);
+    ).toEqual(1);
   });
-  it("should not decrease below 0 the activeItem on arrowUp", () => {
+  it("should not decrease below 1 the activeItem on arrowUp", () => {
     container
       .find('input[type="text"]')
       .simulate("keydown", { key: "ArrowUp" });
     expect(
       container.find('input[type="text"]').prop("data-active-item")
-    ).toEqual(0);
+    ).toEqual(1);
   });
   it("should reset active item on Enter press", () => {
-    container
+    const options = { createNodeMock };
+    const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
+    mountedContainer
       .find('input[type="text"]')
       .simulate("keydown", { key: "ArrowDown" });
-    container.find('input[type="text"]').simulate("keydown", { key: "Enter" });
+    mountedContainer
+      .find('input[type="text"]')
+      .simulate("keydown", { key: "Enter" });
     expect(
-      container.find('input[type="text"]').prop("data-active-item")
-    ).toEqual(0);
+      mountedContainer.find('input[type="text"]').prop("data-active-item")
+    ).toEqual(1);
+  });
+
+  it("should close on Escape", () => {
+    const options = { createNodeMock };
+    const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
+    mountedContainer
+      .find('input[type="text"]')
+      .simulate("keydown", { key: "Escape" });
+    expect(
+      mountedContainer.find('input[type="text"]').prop("data-active")
+    ).toEqual(false);
   });
 
   it("should save selection onEnter press", () => {
-    container
+    const options = { createNodeMock };
+    const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
+    mountedContainer
       .find('input[type="text"]')
       .simulate("keydown", { key: "ArrowDown" });
-    container.find('input[type="text"]').simulate("keydown", { key: "Enter" });
-    expect(container.find('input[type="text"]').prop("value")).toEqual(
-      "Dan Neciu"
+    mountedContainer
+      .find('input[type="text"]')
+      .simulate("keydown", { key: "Enter" });
+    expect(mountedContainer.find('input[type="text"]').prop("value")).toEqual(
+      "Jon Nehnson"
     );
   });
 
@@ -163,7 +193,7 @@ describe("<Autocomplete /> with mocked data", () => {
         value: "Dan"
       }
     });
-    expect(mountedContainer.find("Dropdown").prop("data").length).toEqual(1);
+    expect(mountedContainer.find(Dropdown).prop("data").length).toEqual(1);
   });
 
   it("should filter managers across first name and last name", () => {
@@ -175,7 +205,7 @@ describe("<Autocomplete /> with mocked data", () => {
         value: "nne"
       }
     });
-    expect(mountedContainer.find("Dropdown").prop("data").length).toEqual(2);
+    expect(mountedContainer.find(Dropdown).prop("data").length).toEqual(2);
   });
 
   it("should filter regardless of case sensitivity", () => {
@@ -187,7 +217,7 @@ describe("<Autocomplete /> with mocked data", () => {
         value: "NNE"
       }
     });
-    expect(mountedContainer.find("Dropdown").prop("data").length).toEqual(2);
+    expect(mountedContainer.find(Dropdown).prop("data").length).toEqual(2);
   });
 
   it("should render a list based on the mocked data", () => {
@@ -212,7 +242,7 @@ describe("<Autocomplete /> with mocked data", () => {
     });
     container.find('input[type="text"]').simulate("blur", {});
     container.find('input[type="text"]').simulate("focus", {});
-    expect(mountedContainer.find("Dropdown").prop("data").length).toEqual(2);
+    expect(mountedContainer.find(Dropdown).prop("data").length).toEqual(2);
   });
 
   it("should have the correct label", () => {

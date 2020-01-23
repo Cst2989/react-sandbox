@@ -23,44 +23,42 @@ const ItemInfo = ({ name = "N/A", email = "N/A" }) => {
     </span>
   );
 };
-const Dropdown = ({ data = [], active = 0, emit = () => null }) => {
-  let refs = useRef(
-    Array.from({ length: data.length }).map(() => React.createRef())
-  );
-
-  const selectItem = item => {
-    emit(item.name);
-  };
-  useEffect(() => {
-    if (active > 2) {
-      refs.current[active - 1].current.scrollIntoView();
-    } else {
-      refs.current[0].current.scrollIntoView();
-    }
-  }, [active]);
-  return (
-    <Fragment>
-      <ul className={`${styles.autocompleteResults}`}>
-        {data.map((item, i) => (
-          <li
-            key={i + 1}
-            ref={refs.current[i]}
-            className={
-              `${styles.autocompleteResultsItem} ` +
-              (active === i + 1
-                ? `${styles.autocompleteResultsItemActive}`
-                : "")
-            }
-            onClick={() => selectItem(item)}
-          >
-            <Avatar avatar={item.avatar} initials={item.initials} />
-            <ItemInfo name={item.name} email={item.email} />
-          </li>
-        ))}
-      </ul>
-    </Fragment>
-  );
-};
+export const Dropdown = React.memo(
+  ({ data = [], active = 0, emit = () => null }) => {
+    let refs = useRef(
+      Array.from({ length: data.length + 1 }).map(() => React.createRef())
+    );
+    useEffect(() => {
+      if (active > 2) {
+        refs.current[active - 1].current.scrollIntoView();
+      } else {
+        refs.current[0].current.scrollIntoView();
+      }
+    }, [active]);
+    return (
+      <Fragment>
+        <ul className={`${styles.autocompleteResults}`}>
+          {data.map((item, i) => (
+            <li
+              key={i + 1}
+              ref={refs.current[i]}
+              className={
+                `${styles.autocompleteResultsItem} ` +
+                (active === i + 1
+                  ? `${styles.autocompleteResultsItemActive}`
+                  : "")
+              }
+              onClick={() => emit(item.name)}
+            >
+              <Avatar avatar={item.avatar} initials={item.initials} />
+              <ItemInfo name={item.name} email={item.email} />
+            </li>
+          ))}
+        </ul>
+      </Fragment>
+    );
+  }
+);
 
 const Autocomplete = ({
   data = [],
@@ -70,8 +68,8 @@ const Autocomplete = ({
   const [inputText, setInputText] = useState("");
   const [active, setActive] = useState(false);
   const [filteredData, setFilterData] = useState([]);
-  const [activeItem, setActiveItem] = useState(0);
-
+  const [activeItem, setActiveItem] = useState(1);
+  const Input = useRef(React.createRef());
   const filterData = value => {
     const matchingItems = data.filter(item => {
       if (
@@ -84,16 +82,21 @@ const Autocomplete = ({
       }
       return false;
     });
-
+    setActiveItem(1);
     setFilterData(matchingItems);
     setInputText(value);
   };
   const handleKeyDown = event => {
     if (event.key === "Enter") {
-      setActiveItem(0);
+      setActiveItem(1);
       setInputText(filteredData[activeItem - 1].name);
       setFilterData(data);
       setActive(false);
+      Input.current.blur();
+    }
+    if (event.key === "Escape") {
+      setActive(false);
+      Input.current.blur();
     }
     if (event.key === "ArrowDown") {
       if (activeItem < filteredData.length) {
@@ -101,7 +104,7 @@ const Autocomplete = ({
       }
     }
     if (event.key === "ArrowUp") {
-      if (activeItem > 0) {
+      if (activeItem > 1) {
         setActiveItem(activeItem - 1);
       }
     }
@@ -121,6 +124,7 @@ const Autocomplete = ({
         <Label label={label} />
         <input
           type="text"
+          ref={Input}
           data-active={active}
           data-active-item={activeItem}
           className={`${styles.autocompleteInput}`}
