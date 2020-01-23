@@ -127,6 +127,12 @@ describe('<Autocomplete /> with mocked data', () => {
         container.find('input[type="text"]').simulate('keydown', {key: 'Enter'})
         expect(container.find('input[type="text"]').prop('data-active-item')).toEqual(0);
     });
+
+    it('should save selection onEnter press', () => {
+        container.find('input[type="text"]').simulate('keydown', {key: 'ArrowDown'})
+        container.find('input[type="text"]').simulate('keydown', {key: 'Enter'})
+        expect(container.find('input[type="text"]').prop('value')).toEqual('Dan Neciu');
+    });
     
     it('should filter based on input', () => {
         const options = {createNodeMock};
@@ -151,6 +157,8 @@ describe('<Autocomplete /> with mocked data', () => {
         });
         expect(mountedContainer.find('Dropdown').prop('data').length).toEqual(2);
     });
+
+    
     it('should filter regardless of case sensitivity', () => {
         const options = {createNodeMock};
         const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
@@ -174,5 +182,31 @@ describe('<Autocomplete /> with mocked data', () => {
             (el) => el.type === 'li'
             );
         expect(list.length).toEqual(5);
+    });
+
+    it('should maintain filter on blur effect', () => {
+        const options = {createNodeMock};
+        const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
+
+        mountedContainer.find('input[type="text"]').simulate('change', {
+            target: {
+                value: 'nne',
+            },
+        });
+        container.find('input[type="text"]').simulate('blur', {});
+        container.find('input[type="text"]').simulate('focus', {});
+        expect(mountedContainer.find('Dropdown').prop('data').length).toEqual(2);
+    });
+
+    it('should have the correct label', () => {
+        const options = {createNodeMock};
+        const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
+        expect(mountedContainer.find('Label').prop('label')).toEqual('Managers');
+    });
+
+    it('should match the snapshot', () => {
+        const options = {createNodeMock};
+        const mountedContainer = mount(<Autocomplete {...initialProps} />, options);
+        expect(mountedContainer.html()).toMatchSnapshot();
     });
 });   
