@@ -6,39 +6,39 @@ const Label = (props) => {
         <label className={`${styles.autocompleteLabel}`}>{props.label}</label>
     )
 }
-const Avatar = props => {
+const Avatar = ({avatar = null, initials='N/A', }) => {
     return (
         <span className={`${styles.autocompleteResultsItemAvatar}`}>
-            { props.avatar ? <img alt={props.firstName} src={props.avatar.url} /> : props.initials }
+            { avatar ? <img alt={initials } src={avatar.url} /> : initials }
         </span>
     )
 }
-const ItemInfo = props => {
+const ItemInfo = ({name = 'N/A', email='N/A'}) => {
     return (
         <span className={`${styles.autocompleteResultsItemInfo}`}>
-            <span className={`${styles.autocompleteResultsItemInfoName}`}>{props.name}</span>
-            <span className={`${styles.autocompleteResultsItemInfoEmail}`}>{props.email}</span>
+            <span className={`${styles.autocompleteResultsItemInfoName}`}>{name}</span>
+            <span className={`${styles.autocompleteResultsItemInfoEmail}`}>{email}</span>
         </span>
     )
 }
-const Dropdown = (props) => {
-    let refs = useRef(Array.from({ length: props.data.length }).map(() => React.createRef()));
+const Dropdown = ({data = [], active= 0, emit = () => null }) => {
+    let refs = useRef(Array.from({ length: data.length }).map(() => React.createRef()));
     
-    const selectItem = (item, i ) => {
-        props.emit(item.name)
+    const selectItem = (item) => {
+        emit(item.name)
     }
     useEffect(() => {
-        if (props.active > 2) {
-            refs.current[props.active - 1].current.scrollIntoView();
+        if (active > 2) {
+            refs.current[active - 1].current.scrollIntoView();
         } else {
             refs.current[0].current.scrollIntoView();
         }
-    }, [props.active]);
+    }, [active]);
     return (
         <Fragment>
             <ul className={`${styles.autocompleteResults}`}>
-                {props.data && props.data.map((item, i) => (
-                    <li key={i + 1} ref={refs.current[i]} className={`${styles.autocompleteResultsItem} ` + (props.active === i + 1 ? `${styles.autocompleteResultsItemActive}` : '' )} onClick={() => selectItem(item, i)}>
+                {data.map((item, i) => (
+                    <li key={i + 1} ref={refs.current[i]} className={`${styles.autocompleteResultsItem} ` + (active === i + 1 ? `${styles.autocompleteResultsItemActive}` : '' )} onClick={() => selectItem(item)}>
                         <Avatar avatar={item.avatar} initials={item.initials}  /> 
                         <ItemInfo name={item.name} email={item.email} />
                     </li>
@@ -48,14 +48,14 @@ const Dropdown = (props) => {
     )
 }
 
-const Autocomplete = (props) => {
+const Autocomplete = ({data = [], label='Default Label', placeholder='Default Placeholder'}) => {
     const [inputText, setInputText] = useState('');
     const [active, setActive] = useState(false);
     const [filteredData, setFilterData] = useState([])
     const [activeItem, setActiveItem] = useState(0)
 
     const filterData = (value) => {
-        const matchingItems = props.data.filter((item) => {
+        const matchingItems = data.filter((item) => {
             if(item.name.replace(/\s/g,'').toLowerCase().indexOf(value.replace(/\s/g,'').toLowerCase()) > -1) {
                 return true
             }
@@ -68,8 +68,8 @@ const Autocomplete = (props) => {
     const handleKeyDown = (event) => {
         if(event.key === 'Enter') {
             setActiveItem(0)
-            setInputText(filteredData[activeItem].name)
-            setFilterData(props.data)
+            setInputText(filteredData[activeItem - 1].name)
+            setFilterData(data)
             setActive(false)
         }
         if(event.key === 'ArrowDown') {
@@ -84,13 +84,13 @@ const Autocomplete = (props) => {
         }
     }
     useEffect(() => {
-        setFilterData(props.data);
-    }, [props.data]);
+        setFilterData(data);
+    }, [data]);
 
     return (
         <Fragment>
             <div className={`${styles.autocomplete} ` + ( active ? `${styles.autocompleteActive}` : '') }>
-                <Label label={props.label} />
+                <Label label={label} />
                 <input 
                     type="text"  
                     className={`${styles.autocompleteInput}`}
@@ -99,7 +99,7 @@ const Autocomplete = (props) => {
                     onKeyDown={handleKeyDown}
                     onFocus={() => setActive(true)} 
                     onBlur={() => setActive(false)} 
-                    placeholder={props.placeholder}
+                    placeholder={placeholder}
                 />
                 <div className={`${styles.autocompleteCaret}`}></div>
                 {filteredData.length > 0 && 
