@@ -1,8 +1,5 @@
-import React from "react";
-import { shallow, mount } from "enzyme";
 import { calculateBowlingScore } from './bowling-score';
 import { calculateFrames } from './bowling-score';
-import { create, act } from "react-test-renderer";
 
 describe('Bowling score', () => {
     const firstData = [1, 1,1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1,1, 1,1, 1,1, 1];
