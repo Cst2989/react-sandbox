@@ -4,7 +4,6 @@ export const caulcateLargestPalindrom = (inputRange) => {
         if(isPalindrom(x)) {
             for(let y = inputRange -1; y > 0; y--) {
                 if (x % y === 0 && x / y < inputRange) {
-                    console.log(y);
                     return x;
                 }
             }

@@ -17,7 +17,6 @@ export const calculateBowlingScore = (numbers)  => {
             let sum = frame.reduce((a,b) => a + b, 0)
             totalSum +=sum + frame[2];
         }
-        console.log(totalSum);
     })
     return totalSum;
 }
